@@ -1,0 +1,52 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+%\ifcvprfinal\pagestyle{empty}\fi
+\setcounter{page}{1}
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{A survey of Knowledge Distillation}
+
+\author{Trung Dao\\
+VinAI Research\\
+14 Thuy Khue, Tay Ho, Ha Noi\\
+{\tt\small v.trungdt21@vinai.io}
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+   For the last few years, deep learning has proved its ability to solve complicated problems that were too cumbersome to handle. It is undeniable that key factors contributing to this sucess are mainly large-scale data and deep neural networks with billions of parameters. However, to deploy and smoothly run these enormous models on on-edge devices is not always a straightforward process. In order to overcome this, a variety of model compression and acceleration techniques have been developed. As one of the outstand techniques, knowledge distillation (KD) seeks to transfer information learned from one large model (teacher) to smaller one (student). This survey firstly gives a brief overview of what KD is then quickly investigates some of the recent work about training schemes and teacher-student architectures.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\input{chapters/introduction.tex}
+\input{chapters/baseknowledge.tex}
+\input{chapters/methods.tex}
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+\end{document}
