@@ -1,145 +1,30 @@
-\section{Formatting your paper}
+\section{Background: Knowledge Distillation}
 
-All text must be in a two-column format. The total allowable width of the
-text area is $6\frac78$ inches (17.5 cm) wide by $8\frac78$ inches (22.54
-cm) high. Columns are to be $3\frac14$ inches (8.25 cm) wide, with a
-$\frac{5}{16}$ inch (0.8 cm) space between them. The main title (on the
-first page) should begin 1.0 inch (2.54 cm) from the top edge of the
-page. The second and following pages should begin 1.0 inch (2.54 cm) from
-the top edge. On all pages, the bottom margin should be 1-1/8 inches (2.86
-cm) from the bottom edge of the page for $8.5 \times 11$-inch paper; for A4
-paper, approximately 1-5/8 inches (4.13 cm) from the bottom edge of the
-page.
+\subsection{Problem statement}
+Neural network models have been successful in a myriad of fields including extremely complex problems. However, these models are enormous in size and computational hungry, thus cannot be deployed to on-edge devices or simply not feasible in some situations. To compensate this situation, knowledge distillation was first proposed in \cite{firstkdpaper} and properly formalize in \cite{hintonfirstkd}. Buciluǎ et al. \cite{firstkdpaper}, the knowlede is transferred from the larger model to smaller model while minimizing the logits difference produced by those two models respectively. This vanilla method open the first path of knowledge type that can be use to distilled, later on, there started to have some other works using the activations, feature maps of intermediate layers as the guide for the student network \cite{featurebased01, featurebased02_AT,featurebased03_relu}. Some other methods to extract knowledge by comparing relationship between difference layers of teacher model \cite{relbase01, relbase02} are also worth mentioning but won't be discussed in this survey.
 
 %-------------------------------------------------------------------------
-\subsection{Margins and page numbering}
+\subsection{Knowledge}
+\subsubsection{Knowledge from logits}
+In this type of knowledge extraction, it usually refers to using the neural response of the final output layer, or also known as \textit{logits} of the teacher model. As stated before, the first application of logits in KD is used in \cite{firstkdpaper}, but in many situations, given a highly confident teacher model, the output of softmax function gives more less the same information as the ground truth label (since this is the core idea of softmax function - maximizing the probabilities of one while minimizing the others). Tackling this problem, Hinton et al. \cite{hintonfirstkd} proposed the concept of 'soft labels' and declared that this type of label contains informative \textit{dark knowledge}. Given the \textbf{logits} $z$ from a network, the 'soft label' $p_i$ of an image is defined as:
+\[
+   p_i = \frac{\text{exp}(\frac{z_i}{\rho})}{\sum_j \text{exp}(\frac{z_i}{\rho})}
+\]
+where $\rho$ is the temperature parameter, notice that when $\rho=1$, we get the normal softmax function. Determine which value is optimal for $\rho$ is still a debatable topics but it is argued that while increasing $\rho$, the label becomes softer and providing more information about which class is similar to the predicted label. Accordingly, the logits-based distillation loss function is defined as follow:
+\[
+   \mathcal{L}_{\text{LB}}(x;\theta) = \alpha * \mathcal{H}(y, \sigma(z_s)) + \beta * \mathcal{H}(\sigma(z_t;\rho), \sigma(z_s;\rho))
+\]
+where $x$ is the input, $\theta$ are the student model weights, $\mathcal{H}(.)$ is the cross-entropy loss function, $y$ is the ground truth label, $\sigma(.)$ is the $\rho$-parameterized softmax function, $\alpha, \beta$ are the coefficients to tune in order to balance between both cross-entropies, and $z_t, z_s$ are the logits of teacher and student model respectively.
 
-All printed material, including text, illustrations, and charts, must be kept
-within a print area 6-7/8 inches (17.5 cm) wide by 8-7/8 inches (22.54 cm)
-high.
-Page numbers should be in footer with page numbers, centered and .75
-inches from the bottom of the page and make it start at the correct page
-number rather than the 4321 in the example.  To do this fine the line (around
-line 23)
-\begin{verbatim}
-%\ifcvprfinal\pagestyle{empty}\fi
-\setcounter{page}{4321}
-\end{verbatim}
-where the number 4321 is your assigned starting page.
+Logits-based knowledge is fairly straightforward and easy to implement so it is often the first approach used when need to apply knowledge distillation. As far as the survey goes, there are two main motives of using logits-based knowledge: 1) using soft labels 2) create/use noisy data to train. A brief table containing its description and several related work can be found at \ref{tab:logitbased_related}. Nevertheless, since this type of knowledge only utilize the final output of the teacher model, it fails to offer information gathered in the intermediate layers, which later was proved to contain many informative result \cite{featurebased01}. Other than that, due to its characteristic, logits-based knowledge is bounded with the supervised learning.
 
-Make sure the first page is numbered by commenting out the first page being
-empty on line 46
-\begin{verbatim}
-%\thispagestyle{empty}
-\end{verbatim}
+\subsubsection{Knowledge from intermediate layers}
+What's extraordinary about deep neural networks is how they extract and abstractly represent features through the feature maps generated between each layer. Hence, feature-based knowledge would theoretically contain richer information than logits-based knowledge. Not only so, by combining both intermediate and last layer's output, we can consider feature-based knowledge is an extension of the previous knowledge type.
 
+Romero et al. \cite{featurebased01} introduced the term \textit{hint} as the outputs of a teacher hidden layer, which are used to guide the student learning process. The core idea is to choose some intermediate layers in both teacher and student layer and force the student to mimics the result of the teacher's feature maps. Motivated by this work, there has been many studies to investigate which hint layer/ guided layer to choose and how to measure the distance between them. The feature-based distillation loss function is often defined as follow:
+\[
+      \mathcal{L}_{FB}(f_t, f_s) = \mathcal{D}(\Phi_t(f_t), \Phi_s(f_s))
+\]
+where $f_t, f_s$ are the selected hint and guided layers, $\Phi_t, \Phi_s$ are the transformation functions for the mentioned layers respectively, which often are applied when the result of two layers are mismatched, $\mathcal{D}$ is the distance function measuring the similarity between the hint and guided layer. L1, L2 is often used for this distance function, but for some works, more complex function might be used such as the Maximum Mean Discrepancy (MMD) metric \cite{featurebased04_mmd} or Kullback–Leibler divergence \cite{featurebased05_kl}.
 
-%-------------------------------------------------------------------------
-\subsection{Type-style and fonts}
-
-Wherever Times is specified, Times Roman may also be used. If neither is
-available on your word processor, please use the font closest in
-appearance to Times to which you have access.
-
-MAIN TITLE. Center the title 1-3/8 inches (3.49 cm) from the top edge of
-the first page. The title should be in Times 14-point, boldface type.
-Capitalize the first letter of nouns, pronouns, verbs, adjectives, and
-adverbs; do not capitalize articles, coordinate conjunctions, or
-prepositions (unless the title begins with such a word). Leave two blank
-lines after the title.
-
-AUTHOR NAME(s) and AFFILIATION(s) are to be centered beneath the title
-and printed in Times 12-point, non-boldface type. This information is to
-be followed by two blank lines.
-
-The ABSTRACT and MAIN TEXT are to be in a two-column format.
-
-MAIN TEXT. Type main text in 10-point Times, single-spaced. Do NOT use
-double-spacing. All paragraphs should be indented 1 pica (approx. 1/6
-inch or 0.422 cm). Make sure your text is fully justified---that is,
-flush left and flush right. Please do not place any additional blank
-lines between paragraphs.
-
-Figure and table captions should be 9-point Roman type as in
-Figures~\ref{fig:onecol} and~\ref{fig:short}.  Short captions should be centred.
-
-\noindent Callouts should be 9-point Helvetica, non-boldface type.
-Initially capitalize only the first word of section titles and first-,
-second-, and third-order headings.
-
-FIRST-ORDER HEADINGS. (For example, {\large \bf 1. Introduction})
-should be Times 12-point boldface, initially capitalized, flush left,
-with one blank line before, and one blank line after.
-
-SECOND-ORDER HEADINGS. (For example, { \bf 1.1. Database elements})
-should be Times 11-point boldface, initially capitalized, flush left,
-with one blank line before, and one after. If you require a third-order
-heading (we discourage it), use 10-point Times, boldface, initially
-capitalized, flush left, preceded by one blank line, followed by a period
-and your text on the same line.
-
-%-------------------------------------------------------------------------
-\subsection{Footnotes}
-
-Please use footnotes\footnote {This is what a footnote looks like.  It
-often distracts the reader from the main flow of the argument.} sparingly.
-Indeed, try to avoid footnotes altogether and include necessary peripheral
-observations in
-the text (within parentheses, if you prefer, as in this sentence).  If you
-wish to use a footnote, place it at the bottom of the column on the page on
-which it is referenced. Use Times 8-point type, single-spaced.
-
-
-%-------------------------------------------------------------------------
-\subsection{References}
-
-List and number all bibliographical references in 9-point Times,
-single-spaced, at the end of your paper. When referenced in the text,
-enclose the citation number in square brackets, for
-example~\cite{Authors14}.  Where appropriate, include the name(s) of
-editors of referenced books.
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|l|c|}
-\hline
-Method & Frobnability \\
-\hline\hline
-Theirs & Frumpy \\
-Yours & Frobbly \\
-Ours & Makes one's heart Frob\\
-\hline
-\end{tabular}
-\end{center}
-\caption{Results.   Ours is better.}
-\end{table}
-
-%-------------------------------------------------------------------------
-\subsection{Illustrations, graphs, and photographs}
-
-All graphics should be centered.  Please ensure that any point you wish to
-make is resolvable in a printed copy of the paper.  Resize fonts in figures
-to match the font in the body text, and choose line widths which render
-effectively in print.  Many readers (and reviewers), even of an electronic
-copy, will choose to print your paper in order to read it.  You cannot
-insist that they do otherwise, and therefore must not assume that they can
-zoom in to see tiny details on a graphic.
-
-When placing figures in \LaTeX, it's almost always best to use
-\verb+\includegraphics+, and to specify the  figure width as a multiple of
-the line width as in the example below
-{\small\begin{verbatim}
-   \usepackage[dvips]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]
-                   {myfile.eps}
-\end{verbatim}
-}
-
-
-%-------------------------------------------------------------------------
-\subsection{Color}
-
-Please refer to the author guidelines on the CVPR 2019 web page for a discussion
-of the use of color in your document.
-
-%------------------------------------------------------------------------
+Eventhough this knowledge type offers more favorable information for the student learning process, where to pick the hint/ guided layers or the transformation functions still need more investigations. For examples, the teacher's layer transformation function are directly critical for this process since there are risks of losing information in the process of transforming. Several past work has already encountered this problem since the feature map's dimension got downscaled, causing loss of knowledge \cite{featurebased02_AT,featurebased06_meal}. To counter this situation, one could either come up with novel transformation function such as margin RELU\cite{featurebased03_relu} or not use any transformation at all \cite{featurebased01}. But as investigated by Heo et al. \cite{featurebased03_relu}, the hints consist of both beneficial and adverse information so we should try to only gather the positive ones rather than distilling all of it. The same goes for the guided layers, sometimes researchers use the same transformation \cite{featurebased02_AT}, which might lead to the same information loss. Some other works use $1 \times 1$ convolutional layer as a student transform \cite{featurebased01,featurebased03_relu} in order to match the depth dimension with the hints, so no information would be lossed during the process. A more detail of progressive work using feature-based knowledge can be found at figure \ref{tab:featbased_related}.

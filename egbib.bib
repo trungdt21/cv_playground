@@ -44,7 +44,7 @@ year = 2004
 }
 
 @inproceedings{firstkdpaper,
-author = {Buciluundefined, Cristian and Caruana, Rich and Niculescu-Mizil, Alexandru},
+author = {Buciluǎ, Cristian and Caruana, Rich and Niculescu-Mizil, Alexandru},
 title = {Model Compression},
 year = {2006},
 isbn = {1595933395},
@@ -69,3 +69,182 @@ URL	= {http://arxiv.org/abs/1503.02531},
 booktitle	= {NIPS Deep Learning and Representation Learning Workshop}
 }
 
+@misc{visualtask04,
+  title         = {Resolution-Based Distillation for Efficient Histology Image Classification},
+  author        = {Joseph DiPalma and Arief A. Suriawinata and Laura J. Tafe and Lorenzo Torresani and Saeed Hassanpour},
+  year          = {2021},
+  eprint        = {2101.04170},
+  archiveprefix = {arXiv},
+  primaryclass  = {eess.IV}
+}
+
+@misc{visualtask02,
+  title         = {Knowledge Distillation with Feature Maps for Image Classification},
+  author        = {Wei-Chun Chen and Chia-Che Chang and Chien-Yu Lu and Che-Rung Lee},
+  year          = {2018},
+  eprint        = {1812.00660},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
+}
+@misc{visualtask01,
+  title         = {Learning without Forgetting},
+  author        = {Zhizhong Li and Derek Hoiem},
+  year          = {2017},
+  eprint        = {1606.09282},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+@misc{visualtask03,
+  title         = {Label Refinery: Improving ImageNet Classification through Label Progression},
+  author        = {Hessam Bagherinezhad and Maxwell Horton and Mohammad Rastegari and Ali Farhadi},
+  year          = {2018},
+  eprint        = {1805.02641},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+
+@misc{segment01,
+  title         = {Knowledge Adaptation for Efficient Semantic Segmentation},
+  author        = {Tong He and Chunhua Shen and Zhi Tian and Dong Gong and Changming Sun and Youliang Yan},
+  year          = {2019},
+  eprint        = {1903.04688},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+
+@article{facial01,
+  title    = {MobileFAN: Transferring deep hidden representation for face alignment},
+  journal  = {Pattern Recognition},
+  volume   = {100},
+  pages    = {107114},
+  year     = {2020},
+  issn     = {0031-3203},
+  doi      = {https://doi.org/10.1016/j.patcog.2019.107114},
+  url      = {https://www.sciencedirect.com/science/article/pii/S0031320319304157},
+  author   = {Yang Zhao and Yifan Liu and Chunhua Shen and Yongsheng Gao and Shengwu Xiong},
+  keywords = {Face alignment, Knowledge distillation, Lightweight model},
+  abstract = {Facial landmark detection is a crucial prerequisite for many face analysis applications. Deep learning-based methods currently dominate the approach of addressing the facial landmark detection. However, such works generally introduce a large number of parameters, resulting in high memory cost. In this paper, we aim for a lightweight as well as effective solution to facial landmark detection. To this end, we propose an effective lightweight model, namely Mobile Face Alignment Network (MobileFAN), using a simple backbone MobileNetV2 as the encoder and three deconvolutional layers as the decoder. The proposed MobileFAN, with only 8% of the model size and lower computational cost, achieves superior or equivalent performance compared with state-of-the-art models. Moreover, by transferring the geometric structural information of a face graph from a large complex model to our proposed MobileFAN through feature-aligned distillation and feature-similarity distillation, the performance of MobileFAN is further improved in effectiveness and efficiency for face alignment. Extensive experiment results on three challenging facial landmark estimation benchmarks including COFW, 300W and WFLW show the superiority of our proposed MobileFAN against state-of-the-art methods.}
+}
+
+@article{facial02,
+   title={Low-Resolution Face Recognition in the Wild via Selective Knowledge Distillation},
+   volume={28},
+   ISSN={1941-0042},
+   url={http://dx.doi.org/10.1109/TIP.2018.2883743},
+   DOI={10.1109/tip.2018.2883743},
+   number={4},
+   journal={IEEE Transactions on Image Processing},
+   publisher={Institute of Electrical and Electronics Engineers (IEEE)},
+   author={Ge, Shiming and Zhao, Shengwei and Li, Chenyu and Li, Jia},
+   year={2019},
+   month={Apr},
+   pages={2051–2062}
+}
+
+@misc{lanedetect01,
+  title         = {Learning Lightweight Lane Detection CNNs by Self Attention Distillation},
+  author        = {Yuenan Hou and Zheng Ma and Chunxiao Liu and Chen Change Loy},
+  year          = {2019},
+  eprint        = {1908.00821},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+
+@inproceedings{nlp01,
+  title     = {Patient Knowledge Distillation for {BERT} Model Compression},
+  author    = {Sun, Siqi  and
+      Cheng, Yu  and
+      Gan, Zhe  and
+      Liu, Jingjing},
+  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
+  month     = nov,
+  year      = {2019},
+  address   = {Hong Kong, China},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://www.aclweb.org/anthology/D19-1441},
+  doi       = {10.18653/v1/D19-1441},
+  pages     = {4323--4332},
+  abstract  = {Pre-trained language models such as BERT have proven to be highly effective for natural language processing (NLP) tasks. However, the high demand for computing resources in training such models hinders their application in practice. In order to alleviate this resource hunger in large-scale model training, we propose a Patient Knowledge Distillation approach to compress an original large model (teacher) into an equally-effective lightweight shallow network (student). Different from previous knowledge distillation methods, which only use the output from the last layer of the teacher network for distillation, our student model patiently learns from multiple intermediate layers of the teacher model for incremental knowledge extraction, following two strategies: (i) PKD-Last: learning from the last k layers; and (ii) PKD-Skip: learning from every k layers. These two patient distillation schemes enable the exploitation of rich information in the teacher{'}s hidden layers, and encourage the student model to patiently learn from and imitate the teacher through a multi-layer distillation process. Empirically, this translates into improved results on multiple NLP tasks with a significant gain in training efficiency, without sacrificing model accuracy.}
+}
+
+@misc{nlp02,
+  title         = {TinyBERT: Distilling BERT for Natural Language Understanding},
+  author        = {Xiaoqi Jiao and Yichun Yin and Lifeng Shang and Xin Jiang and Xiao Chen and Linlin Li and Fang Wang and Qun Liu},
+  year          = {2020},
+  eprint        = {1909.10351},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL}
+}
+
+@misc{featurebased03_relu,
+  title         = {A Comprehensive Overhaul of Feature Distillation},
+  author        = {Byeongho Heo and Jeesoo Kim and Sangdoo Yun and Hyojin Park and Nojun Kwak and Jin Young Choi},
+  year          = {2019},
+  eprint        = {1904.01866},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+
+@misc{featurebased01,
+  title         = {FitNets: Hints for Thin Deep Nets},
+  author        = {Adriana Romero and Nicolas Ballas and Samira Ebrahimi Kahou and Antoine Chassang and Carlo Gatta and Yoshua Bengio},
+  year          = {2015},
+  eprint        = {1412.6550},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
+}
+
+@misc{featurebased02_AT,
+  title         = {Paying More Attention to Attention: Improving the Performance of Convolutional Neural Networks via Attention Transfer},
+  author        = {Sergey Zagoruyko and Nikos Komodakis},
+  year          = {2017},
+  eprint        = {1612.03928},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+
+@misc{featurebased04_mmd,
+  title         = {Like What You Like: Knowledge Distill via Neuron Selectivity Transfer},
+  author        = {Zehao Huang and Naiyan Wang},
+  year          = {2017},
+  eprint        = {1707.01219},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+
+@misc{featurebased05_kl,
+  title         = {Knowledge Distillation from Internal Representations},
+  author        = {Gustavo Aguilar and Yuan Ling and Yu Zhang and Benjamin Yao and Xing Fan and Chenlei Guo},
+  year          = {2020},
+  eprint        = {1910.03723},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CL}
+}
+
+@misc{featurebased06_meal,
+  title         = {MEAL: Multi-Model Ensemble via Adversarial Learning},
+  author        = {Zhiqiang Shen and Zhankui He and Xiangyang Xue},
+  year          = {2019},
+  eprint        = {1812.02425},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+@inproceedings{relbase01,
+  author    = {J. {Yim} and D. {Joo} and J. {Bae} and J. {Kim}},
+  booktitle = {2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  title     = {A Gift from Knowledge Distillation: Fast Optimization, Network Minimization and Transfer Learning},
+  year      = {2017},
+  volume    = {},
+  number    = {},
+  pages     = {7130-7138},
+  doi       = {10.1109/CVPR.2017.754}
+}
+
+@misc{relbase02,
+  title         = {Better and Faster: Knowledge Transfer from Multiple Self-supervised Learning Tasks via Graph Distillation for Video Classification},
+  author        = {Chenrui Zhang and Yuxin Peng},
+  year          = {2018},
+  eprint        = {1804.10069},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
