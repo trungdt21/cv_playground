@@ -248,3 +248,64 @@ booktitle	= {NIPS Deep Learning and Representation Learning Workshop}
   archiveprefix = {arXiv},
   primaryclass  = {cs.CV}
 }
+
+ @inproceedings{explainkd01_phuong,
+  title     = {Towards Understanding Knowledge Distillation},
+  author    = {Phuong, Mary and Lampert, Christoph},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning},
+  pages     = {5142--5151},
+  year      = {2019},
+  editor    = {Kamalika Chaudhuri and Ruslan Salakhutdinov},
+  volume    = {97},
+  series    = {Proceedings of Machine Learning Research},
+  month     = {09--15 Jun},
+  publisher = {PMLR},
+  pdf       = {http://proceedings.mlr.press/v97/phuong19a/phuong19a.pdf},
+  url       = { http://proceedings.mlr.press/v97/phuong19a.html },
+  abstract  = {Knowledge distillation, i.e., one classifier being trained on the outputs of another classifier, is an empirically very successful technique for knowledge transfer between classifiers. It has even been observed that classifiers learn much faster and more reliably if trained with the outputs of another classifier as soft labels, instead of from ground truth data. So far, however, there is no satisfactory theoretical explanation of this phenomenon. In this work, we provide the first insights into the working mechanisms of distillation by studying the special case of linear and deep linear classifiers. Specifically, we prove a generalization bound that establishes fast convergence of the expected risk of a distillation-trained linear classifier. From the bound and its proof we extract three key factors that determine the success of distillation: * data geometry – geometric properties of the data distribution, in particular class separation, has a direct influence on the convergence speed of the risk; * optimization bias – gradient descent optimization finds a very favorable minimum of the distillation objective; and * strong monotonicity – the expected risk of the student classifier always decreases when the size of the training set grows.}
+} 
+
+@misc{explainkd02_vconcepts,
+  title         = {Explaining Knowledge Distillation by Quantifying the Knowledge},
+  author        = {Xu Cheng and Zhefan Rao and Yilan Chen and Quanshi Zhang},
+  year          = {2020},
+  eprint        = {2003.03622},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
+}
+
+@misc{quantifying,
+  title         = {Quantifying Layerwise Information Discarding of Neural Networks},
+  author        = {Haotian Ma and Yinqing Zhang and Fan Zhou and Quanshi Zhang},
+  year          = {2019},
+  eprint        = {1906.04109},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
+}
+
+@misc{complexitygap,
+  title         = {On the Efficacy of Knowledge Distillation},
+  author        = {Jang Hyun Cho and Bharath Hariharan},
+  year          = {2019},
+  eprint        = {1910.01348},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
+}
+
+@misc{teacherfree,
+  title         = {Revisiting Knowledge Distillation via Label Smoothing Regularization},
+  author        = {Li Yuan and Francis E. H. Tay and Guilin Li and Tao Wang and Jiashi Feng},
+  year          = {2021},
+  eprint        = {1909.11723},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.CV}
+}
+
+@misc{labelsmoothingnoise,
+  title         = {Does label smoothing mitigate label noise?},
+  author        = {Michal Lukasik and Srinadh Bhojanapalli and Aditya Krishna Menon and Sanjiv Kumar},
+  year          = {2020},
+  eprint        = {2003.02819},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
+}

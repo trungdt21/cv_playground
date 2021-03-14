@@ -1,2 +1,51 @@
 \section{Explaining Knowledge Distillation}
-As discussed in the previous sections, knowledge distillation has been successfully applied in various fields and applications. However, clarying how and why KD works in general and its models are usually superior than those trained from raw data still remains an work in progress.
+As discussed in the previous sections, knowledge distillation has been successfully applied in various fields and applications. However, clarying how and why KD works in general and its models are usually superior than those trained from raw data still remains an work in progress. Not only so, there is no universally accepted hypothesis as to how knowledge is transmitted, making it impossible to accurately test emperically scientific results and to design new approaches in a more structured fashion. Most of past works seldom go beyond qualitative assertions, such as suggesting that learning from soft labels may be better than learning from hard labels, or that the teacher's performance in a multi-class environment offers details on how close different classes are to one another \cite{firstkdpaper,hintonfirstkd,featurebased03_relu}.
+
+Recently, some scientific researchers start to focus on finding out what are the real factors making KD works. In the case of deep linear classifiers, Phuong et al. \cite{explainkd01_phuong} came up with a theoretical explaination for a generalization bound for fast convergence of learning distilled student networks. This justification clarifies what the student would learn and how quickly they do it, as well as the factors that influence distillation performance, to be more precise, the authors stated there are three main factors: data geometry, optimization bias and srtong monotocity of the student classifier. 
+
+This survey is going to focus on another work, where the author - Chen et al. quantified the distilled knowledge using the term visual concepts from the intermediate layers of a deep neural network (DNN) in order to explain KD \cite{explainkd02_vconcepts}. What separates this paper from other work is that the author tried to interpret KD from a different perspective of information theory by quantifying, analyzing and comparing encoded information in the intermediate layers between DNNs learned by KD and normal DNNs, which not only investigate the success of KD but also what DNNs have learned during training in order to perform effective inference.
+
+\subsection{Setup}
+Given the teacher network is a pretrained classification model then distill to the student one. The main focus is to compare and analyse the difference betwen the student network with the \textit{baseline network} (DNN learned from raw data) (both three models have the same architecture for fair comparison). Let $x \in R^n$ be the input image, $f_t(x), f_s(x) \in R^L$ be the intermediate-layer features and $y_t = g_t(f_t(x)),\ y_s = g_s(f_s(x))$ be the classification results of teacher and student, respectively. As the effect of KD, $f_s(x)$ is forced to be approximately equivanlent to $f_t(x)$
+
+The author used the method proposed by \cite{quantifying} in order to quantify the discarded information of the input (consider as the conditional entropy$H(X')$) given the intermediate-layer feature $f^{*} = f(x)$ as follows:
+  \[
+      H(X')\ \text{s.t.}\ \forall x' \in X',\ ||f(x')-f^{*}||^2 \le \tau
+  \]
+where $X'$ denotes the set of images having a specific object instance (represented by a small range of feature $||f(x')-f^{*}||^2 \le \tau$ ). With a proper condition of $x'$ ($x' \sim \mathcal{N}(x, \Sigma=diag(\sigma_1^2,...,\sigma_n^2))$, where $n$ is the number of images), the entropy $H(X')$ of the entire image can be formed by the entropies of every pixel $\{H_i\}$:
+  \[
+      H(X') = \displaystyle\sum_{i=1}^nH_i
+  \]
+where $H_i = \text{log} \sigma_i + \frac{1}{2}\text{log}(2\pi e)$ measures the discarded information of the $i$-th pixel.
+
+\subsection{Proposed hypotheses}
+\textbf{Hypothesis 1}: Knowledge distillation makes the DNN learn more reliable visual concepts then learning from raw data.
+
+The paper aims to compare the number of visual concepts that are encoded in the baseline network and those in the student network. They assumed that since those pixels having high $H_i$ would not contribute much to the prediction result of the model, they would be considered as task-irrelevant feature, while those having smaller value are called \textit{visual concepts}: image region whose information is significantly less discarded and mainly used by the DNN. Using the same concept of information theory, this is how the authors quantify the knowledge:
+
+\begin{align*}
+  N_{concept}^{bg}(x) &= \sum_{i \in \Lambda_{bg} w.r.t. x} \mathbbm{1} (\overline{H} - H_i > b), \\
+  N_{concept}^{fg}(x) &= \sum_{i \in \Lambda_{fg} w.r.t. x} \mathbbm{1} (\overline{H} - H_i > b) \\
+  \lambda &= \mathbb{E}_{x \in \textbf{I}} \left[\frac{N_{concept}^{fg}(x)}{N_{concept}^{fg}(x) + N_{concept}^{bg}(x)}\right]
+\end{align*}
+where $N_{concept}^{bg}(x), N_{concept}^{fg}(x)$ are the number of visual concepts encoded on the background and foreground respectively, $\Lambda_{bg}, \Lambda_{fg}$ are the sets of pixel of background and foreground w.r.t. image $x$, $\overline{H} = E_{i\in \Lambda_{bg}}[H_i]$ is the average entropy value of the background pixels which can be used and a baseline entropy. The pixels that having smaller entropy value than this baseline by an small amount $b$ are considered task-relevant visual concepts. Finally, $\lambda$ is proposed as the metric used to measure how effective the model's feature extraction process. The reason why $\lambda$ can do such thing is argued by the author that statistically the foreground contains more informative features than the background, so a well-trained DNN model should focus on the visual concepts in the foreground.
+
+\textbf{Hypothesis 2}: Knowledge distillation ensures that the DNN is prone to learning various concepts simultaneously, in constrast of DNN learning from raw data which learns these sequentially.
+
+The author proposed another metrics based on the number of learned foreground visual concepts along each training epochs and take measurement with respect to the epoch that the model learn those the most: $\hat{m} = \text{argmax}_k N_{k}^{fg}(I)$ and "weight distance" function to estimate the learning effect $\displaystyle \sum_{k=1}^{\hat{m}} \frac{||w_k - w_{k-1}||}{||w_0||}$ (where $w_i$ is the weight of the model at epoch $i$-th):
+\begin{align*}
+  D_{\text{mean}} &= \mathbb{E}_{I \in \textbf{I}} \left[\displaystyle \sum_{k=1}^{\hat{m}} \frac{||w_k - w_{k-1}||}{||w_0||} \right] \\ 
+  D_{\text{var}} &= \text{Var}_{I \in \textbf{I}} \left[\displaystyle \sum_{k=1}^{\hat{m}} \frac{||w_k - w_{k-1}||}{||w_0||}\right] 
+\end{align*}
+where $D_{\text{mean}}$ is the average weight distance where the DNN usually extracts the mosts task-relevant visual concepts, the smaller the value the faster the DNN learns the visual concepts during training. While $D_{\text{var}}$ was considered inversely proportional to how simultaneously the model learns different visual concepts during training.
+
+\textbf{Hypothesis 3}: Comparing to learning from raw data, knowledge distillation produces more consistent optimization directions. 
+
+The final metrics is computed by comparing the amount of learned and chosen foreground visual concepts in the final model $||S_M(I)||$ with the union of those learned in each epoch $||\bigcup_{j=1}^MS_j(I)||$. The proper form of the metric is defined as follow:
+\[
+  \rho = \frac{||S_M(I)||}{||\bigcup_{j=1}^MS_j(I)||}
+\]
+The higher the value $\rho$ indicates the less detours and more stable training process.
+
+\subsection{Discussion}
+The paper offers a novel and understandable interpretation of knowledge distillation from the perspective of information theory, to be more precise, measuring the information encoded in a DNN's intermediate layers. For each hyphothesis, the author proposed a metrics which allows to partly theoretical explain and emperically prove that corresponding theory. But there are some confusing details might need further investigation: 1) this explaining framework only focuses on classification problem, which is one of the simplest form, in order to apply this framework to another applications might need extra information 2) The mathematical concept of presenting object and assumption about distribution of the image set: given a diversed training dataset, whether these metrics function similarly? 3) The estimated epoch $\hat{m}$ used for the second metrics is not a precise estimation.
